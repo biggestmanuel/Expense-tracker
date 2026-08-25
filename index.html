@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Spendly is a simple expense tracker for tracking spending and understanding your money.">
+<title>Spendly — Expense Tracker</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span class="logo">S</span> Spendly</a>
+  <div class="actions"><button id="theme" class="icon" aria-label="Toggle theme">☾</button><button id="addTop" class="primary">+ Add expense</button></div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">PERSONAL FINANCE</p>
+      <h1>Know where your money goes.</h1>
+      <p class="sub">Track spending, spot patterns, and keep your expenses organized without spreadsheets.</p>
+    </div>
+    <div id="today" class="date-pill"></div>
+  </section>
+
+  <section class="stats">
+    <article class="stat featured"><span>Total spent</span><strong id="total">₦0.00</strong><small id="count">0 expenses</small></article>
+    <article class="stat"><span>This month</span><strong id="month">₦0.00</strong><small id="monthName"></small></article>
+    <article class="stat"><span>Average expense</span><strong id="average">₦0.00</strong><small>Across all expenses</small></article>
+  </section>
+
+  <section class="grid">
+    <section class="panel">
+      <div class="panel-head">
+        <div><h2>Expenses</h2><p>Your latest spending records.</p></div>
+        <select id="filter" aria-label="Filter by category"><option value="all">All categories</option></select>
+      </div>
+      <div id="list"></div>
+      <div id="empty" class="empty">
+        <div class="empty-icon">₦</div>
+        <h3>No expenses yet</h3>
+        <p>Add your first expense to start tracking your spending.</p>
+        <button id="addEmpty" class="secondary">Add first expense</button>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <div class="panel-head"><div><h2>By category</h2><p>Where your money is going.</p></div></div>
+      <div id="breakdown"></div>
+    </aside>
+  </section>
+</main>
+
+<div id="backdrop" class="backdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button id="close" class="close" aria-label="Close">×</button>
+    <p class="eyebrow">NEW EXPENSE</p>
+    <h2 id="modalTitle">Add an expense</h2>
+    <p class="modal-sub">Record the details below. Your data stays in this browser.</p>
+    <form id="form" novalidate>
+      <div class="two">
+        <label>Amount
+          <div class="money"><span>₦</span><input id="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required></div>
+          <small id="amountErr"></small>
+        </label>
+        <label>Date
+          <input id="date" type="date" required>
+          <small id="dateErr"></small>
+        </label>
+      </div>
+      <label>Category
+        <select id="category" required>
+          <option value="">Choose a category</option>
+          <option>Food</option><option>Transport</option><option>Shopping</option><option>Bills</option>
+          <option>Entertainment</option><option>Health</option><option>Education</option><option>Travel</option><option>Other</option>
+        </select>
+        <small id="categoryErr"></small>
+      </label>
+      <label>Description
+        <input id="description" maxlength="80" placeholder="e.g. Lunch with friends" required>
+        <small id="descriptionErr"></small>
+      </label>
+      <div class="form-actions"><button id="cancel" type="button" class="secondary">Cancel</button><button class="primary" type="submit">Save expense</button></div>
+    </form>
+  </div>
+</div>
+<div id="toast" class="toast" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
