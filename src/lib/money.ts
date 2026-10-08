@@ -1,0 +1,49 @@
+const FORMATTERS = new Map<string, Intl.NumberFormat>();
+
+/** Locales that render the currency as a familiar symbol rather than a code. */
+const PREFERRED_LOCALES: Record<string, string> = {
+  NGN: "en-NG",
+  USD: "en-US",
+  EUR: "de-DE",
+  GBP: "en-GB",
+  KES: "en-KE",
+  ZAR: "en-ZA",
+  GHS: "en-GH",
+  INR: "en-IN",
+};
+
+export function formatMoney(minor: number, currency = "NGN"): string {
+  const key = currency;
+  let fmt = FORMATTERS.get(key);
+  if (!fmt) {
+    fmt = new Intl.NumberFormat(PREFERRED_LOCALES[currency], {
+      style: "currency",
+      currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    FORMATTERS.set(key, fmt);
+  }
+  return fmt.format(minor / 100);
+}
+
+/**
+ * Parses free-form user input into minor units. Returns `null` when the input
+ * is not a usable positive amount, so callers never have to guard NaN.
+ */
+export function parseAmountToMinor(input: string): number | null {
+  const cleaned = input.trim().replace(/[,\s  ]/g, "");
+  if (!/^\d*\.?\d*$/.test(cleaned) || cleaned === "" || cleaned === ".") return null;
+  const value = Number(cleaned);
+  if (!Number.isFinite(value) || value <= 0) return null;
+  return Math.round(value * 100);
+}
+
+export function formatMinorInput(minor: number): string {
+  return (minor / 100).toFixed(2);
+}
+
+export function clampMinor(value: number): number {
+  if (!Number.isFinite(value)) return 0;
+  return Math.round(value);
+}
