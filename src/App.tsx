@@ -299,6 +299,7 @@ export function App() {
           <p className="modal-sub">Your data stays in this browser.</p>
           <ExpenseForm
             initial={modal.mode === "edit" ? modal.expense : null}
+            currency={currency}
             onSubmit={handleSubmit}
             onCancel={closeModal}
           />

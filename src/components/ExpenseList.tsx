@@ -1,6 +1,6 @@
 import { CATEGORIES, type Category, type Expense, type Filters, type SortKey } from "../types";
 import { categoryColor } from "../lib/colors";
-import { formatMoney } from "../lib/money";
+import { currencySymbol, formatMoney } from "../lib/money";
 import { formatDate } from "../lib/dates";
 import { groupByDay, sumMinor } from "../lib/stats";
 
@@ -117,7 +117,7 @@ export function ExpenseList({
       {expenses.length === 0 ? (
         <div className="empty">
           <div className="empty-icon" aria-hidden="true">
-            ₦
+            {currencySymbol(currency)}
           </div>
           <h3>{filtersActive ? "No matching expenses" : "No expenses yet"}</h3>
           <p>

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CATEGORIES, type Category, type Expense } from "../types";
-import { formatMinorInput, parseAmountToMinor } from "../lib/money";
+import { currencySymbol, formatMinorInput, parseAmountToMinor } from "../lib/money";
 import { todayISO } from "../lib/dates";
 
 export type ExpenseFormValue = {
@@ -13,13 +13,14 @@ export type ExpenseFormValue = {
 
 type Props = {
   initial?: Expense | null;
+  currency: string;
   onSubmit: (value: ExpenseFormValue) => void;
   onCancel: () => void;
 };
 
 type Errors = Partial<Record<"amount" | "date" | "category" | "description", string>>;
 
-export function ExpenseForm({ initial, onSubmit, onCancel }: Props) {
+export function ExpenseForm({ initial, currency, onSubmit, onCancel }: Props) {
   const [amount, setAmount] = useState(() =>
     initial ? formatMinorInput(initial.amountMinor) : "",
   );
@@ -70,7 +71,7 @@ export function ExpenseForm({ initial, onSubmit, onCancel }: Props) {
         <label className="field">
           <span>Amount</span>
           <div className="money-input">
-            <span aria-hidden="true">₦</span>
+            <span aria-hidden="true">{currencySymbol(currency)}</span>
             <input
               ref={amountRef}
               value={amount}

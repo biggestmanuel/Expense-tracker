@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatMoney, parseAmountToMinor } from "./money";
+import { currencySymbol, formatMoney, parseAmountToMinor } from "./money";
 import { addMonths, daysInMonth, monthEnd, monthRange, monthStart, todayISO } from "./dates";
 import {
   applyFilters,
@@ -45,6 +45,13 @@ describe("money", () => {
 
   it("falls back gracefully for an unknown currency code", () => {
     expect(formatMoney(100, "ZZZ")).toContain("1.00");
+  });
+
+  it("resolves currency symbols, falling back to the code", () => {
+    expect(currencySymbol("USD")).toBe("$");
+    expect(currencySymbol("NGN")).toBe("₦");
+    expect(currencySymbol("EUR")).toBeTruthy();
+    expect(currencySymbol("ZZZ")).toBe("ZZZ");
   });
 });
 

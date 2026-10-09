@@ -43,6 +43,30 @@ export function formatMinorInput(minor: number): string {
   return (minor / 100).toFixed(2);
 }
 
+const SYMBOLS = new Map<string, string>();
+
+/**
+ * The short symbol for a currency (`$`, `₦`, `€`). Falls back to the code when a
+ * locale offers no symbol, so the UI never shows an empty prefix.
+ */
+export function currencySymbol(currency: string): string {
+  const cached = SYMBOLS.get(currency);
+  if (cached) return cached;
+  let symbol = currency;
+  try {
+    const parts = new Intl.NumberFormat(PREFERRED_LOCALES[currency] ?? "en", {
+      style: "currency",
+      currency,
+      currencyDisplay: "narrowSymbol",
+    }).formatToParts(0);
+    symbol = parts.find((part) => part.type === "currency")?.value ?? currency;
+  } catch {
+    symbol = currency;
+  }
+  SYMBOLS.set(currency, symbol);
+  return symbol;
+}
+
 export function clampMinor(value: number): number {
   if (!Number.isFinite(value)) return 0;
   return Math.round(value);
