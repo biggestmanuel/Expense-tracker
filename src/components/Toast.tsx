@@ -4,8 +4,6 @@ export type ToastState = {
   message: string;
   actionLabel?: string;
   onAction?: () => void;
-  /** Bumps to restart the auto-dismiss timer for a repeated message. */
-  nonce: number;
 };
 
 type Props = {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { currencySymbol, formatMoney, parseAmountToMinor } from "./money";
+import { currencySymbol, formatMoney, parseAmountToMinor, parseOptionalMinor } from "./money";
 import { addMonths, daysInMonth, monthEnd, monthRange, monthStart, todayISO } from "./dates";
 import {
   applyFilters,
@@ -45,6 +45,17 @@ describe("money", () => {
 
   it("falls back gracefully for an unknown currency code", () => {
     expect(formatMoney(100, "ZZZ")).toContain("1.00");
+  });
+
+  it("treats blank, zero and junk amounts as no bound", () => {
+    expect(parseOptionalMinor("")).toBeUndefined();
+    expect(parseOptionalMinor("   ")).toBeUndefined();
+    expect(parseOptionalMinor("0")).toBeUndefined();
+    expect(parseOptionalMinor("0.00")).toBeUndefined();
+    expect(parseOptionalMinor("abc")).toBeUndefined();
+    expect(parseOptionalMinor("-5")).toBeUndefined();
+    expect(parseOptionalMinor("25")).toBe(2500);
+    expect(parseOptionalMinor("25.50")).toBe(2550);
   });
 
   it("resolves currency symbols, falling back to the code", () => {

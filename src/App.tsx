@@ -51,9 +51,9 @@ export function App() {
   const budget = budgets.find((item) => item.month === month);
 
   const notify = useCallback((message: string, actionLabel?: string, onAction?: () => void) => {
+    // A fresh object identity each call is what restarts the auto-dismiss timer.
     setToast({
       message,
-      nonce: Date.now(),
       ...(actionLabel && onAction ? { actionLabel, onAction } : {}),
     });
   }, []);
@@ -204,7 +204,12 @@ export function App() {
                   ref={importRef}
                   type="file"
                   accept=".csv,text/csv"
+                  /* Driven by the visible Import CSV button; keep it out of the
+                     a11y tree and out of the tab order so it is not an
+                     unlabelled, invisible tab stop. */
                   className="sr-only"
+                  tabIndex={-1}
+                  aria-hidden="true"
                   onChange={(event) => {
                     const file = event.target.files?.[0];
                     if (file) void handleImportFile(file);

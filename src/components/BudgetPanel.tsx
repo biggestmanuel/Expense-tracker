@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { formatMoney, parseAmountToMinor } from "../lib/money";
 import { formatMonth } from "../lib/dates";
 
@@ -13,7 +13,6 @@ type Props = {
 export function BudgetPanel({ month, limitMinor, spentMinor, currency, onSave }: Props) {
   const [value, setValue] = useState(() => (limitMinor ? (limitMinor / 100).toFixed(2) : ""));
   const [error, setError] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setValue(limitMinor ? (limitMinor / 100).toFixed(2) : "");
@@ -26,9 +25,15 @@ export function BudgetPanel({ month, limitMinor, spentMinor, currency, onSave }:
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const parsed = parseAmountToMinor(value);
+    const trimmed = value.trim();
+    if (trimmed === "") {
+      setError("");
+      onSave(0);
+      return;
+    }
+    const parsed = parseAmountToMinor(trimmed);
     if (parsed === null) {
-      setError("Enter an amount greater than zero, or leave blank to clear.");
+      setError("Enter an amount greater than zero.");
       return;
     }
     setError("");
@@ -59,7 +64,6 @@ export function BudgetPanel({ month, limitMinor, spentMinor, currency, onSave }:
         <label className="field">
           <span>Monthly limit</span>
           <input
-            ref={inputRef}
             value={value}
             inputMode="decimal"
             placeholder="e.g. 150000"

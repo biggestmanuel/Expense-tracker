@@ -51,6 +51,7 @@ export type Filters = {
   from: string;
   /** Inclusive `YYYY-MM-DD`. Empty means no upper bound. */
   to: string;
-  minMinor?: number;
-  maxMinor?: number;
+  /** Explicitly `undefined`-able so clearing the field removes the bound. */
+  minMinor?: number | undefined;
+  maxMinor?: number | undefined;
 };

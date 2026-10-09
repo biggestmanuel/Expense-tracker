@@ -1,6 +1,6 @@
 import { CATEGORIES, type Category, type Expense, type Filters, type SortKey } from "../types";
 import { categoryColor } from "../lib/colors";
-import { currencySymbol, formatMoney } from "../lib/money";
+import { currencySymbol, formatMoney, parseOptionalMinor } from "../lib/money";
 import { formatDate } from "../lib/dates";
 import { groupByDay, sumMinor } from "../lib/stats";
 
@@ -80,6 +80,30 @@ export function ExpenseList({
             value={filters.to}
             min={filters.from || undefined}
             onChange={(event) => onFiltersChange({ to: event.target.value })}
+          />
+        </label>
+        <label className="field">
+          <span>Min amount</span>
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            inputMode="decimal"
+            placeholder={currencySymbol(currency)}
+            value={filters.minMinor === undefined ? "" : String(filters.minMinor / 100)}
+            onChange={(event) => onFiltersChange({ minMinor: parseOptionalMinor(event.target.value) })}
+          />
+        </label>
+        <label className="field">
+          <span>Max amount</span>
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            inputMode="decimal"
+            placeholder={currencySymbol(currency)}
+            value={filters.maxMinor === undefined ? "" : String(filters.maxMinor / 100)}
+            onChange={(event) => onFiltersChange({ maxMinor: parseOptionalMinor(event.target.value) })}
           />
         </label>
         <label className="field">

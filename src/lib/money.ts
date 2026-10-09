@@ -39,6 +39,18 @@ export function parseAmountToMinor(input: string): number | null {
   return Math.round(value * 100);
 }
 
+/**
+ * Parses an optional amount bound. Blank, zero and unparseable input all mean
+ * "no bound" (`undefined`) so clearing a filter field actually removes the
+ * filter rather than pinning it to zero.
+ */
+export function parseOptionalMinor(input: string): number | undefined {
+  const trimmed = input.trim();
+  if (trimmed === "") return undefined;
+  const parsed = parseAmountToMinor(trimmed);
+  return parsed === null || parsed <= 0 ? undefined : parsed;
+}
+
 export function formatMinorInput(minor: number): string {
   return (minor / 100).toFixed(2);
 }

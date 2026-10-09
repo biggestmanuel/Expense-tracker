@@ -47,13 +47,8 @@ export function useLedger() {
     );
   }, []);
 
-  const removeExpense = useCallback((id: string): Expense | null => {
-    let removed: Expense | null = null;
-    setExpenses((prev) => {
-      removed = prev.find((expense) => expense.id === id) ?? null;
-      return removed ? prev.filter((expense) => expense.id !== id) : prev;
-    });
-    return removed;
+  const removeExpense = useCallback((id: string) => {
+    setExpenses((prev) => prev.filter((expense) => expense.id !== id));
   }, []);
 
   const restoreExpense = useCallback((expense: Expense) => {
