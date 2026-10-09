@@ -94,11 +94,6 @@ export function monthlySeries(expenses: readonly Expense[], months: readonly str
   return months.map((month) => ({ month, ...(index.get(month) as { totalMinor: number; count: number }) }));
 }
 
-export function averageDailySpend(totalMinor: number, daysElapsed: number): number {
-  if (daysElapsed <= 0) return 0;
-  return Math.round(totalMinor / daysElapsed);
-}
-
 export function applyFilters(expenses: readonly Expense[], filters: Filters): Expense[] {
   const query = filters.query.trim().toLowerCase();
   const categories = new Set(filters.categories);
@@ -152,9 +147,7 @@ export function groupByDay(expenses: readonly Expense[]): { date: string; items:
     .map(([date, items]) => ({ date, items }));
 }
 
-export function monthsWithSpending(expenses: readonly Expense[]): string[] {
-  return [...new Set(expenses.map((expense) => monthOf(expense.date)))].sort().reverse();
-}
+
 
 function shiftMonth(month: string, delta: number): string {
   const [year, monthIndex] = month.split("-").map(Number) as [number, number];

@@ -1,4 +1,4 @@
-import { CATEGORIES, type Budget, type Category, type Expense } from "../types";
+import { CATEGORIES, type Budget, type Category, type Expense, type Theme } from "../types";
 
 const EXPENSES_KEY = "spendly.expenses.v2";
 const BUDGETS_KEY = "spendly.budgets.v1";
@@ -6,7 +6,7 @@ const SETTINGS_KEY = "spendly.settings.v1";
 
 export type Settings = {
   currency: string;
-  theme: "light" | "dark";
+  theme: Theme;
 };
 
 export const DEFAULT_SETTINGS: Settings = { currency: "NGN", theme: "light" };
@@ -157,5 +157,3 @@ export function newId(): string {
   if (cryptoRef && "randomUUID" in cryptoRef) return cryptoRef.randomUUID();
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }
-
-export { EXPENSES_KEY, BUDGETS_KEY, SETTINGS_KEY };

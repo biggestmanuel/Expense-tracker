@@ -110,5 +110,3 @@ export function useLedger() {
     ],
   );
 }
-
-export type Ledger = ReturnType<typeof useLedger>;

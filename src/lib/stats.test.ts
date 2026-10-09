@@ -11,7 +11,7 @@ import {
 } from "./stats";
 import { CATEGORIES, type Expense } from "../types";
 import { fromCSV, toCSV } from "./csv";
-import { sanitizeExpenses, sanitizeSettings, type Settings } from "./storage";
+import { DEFAULT_SETTINGS, sanitizeExpenses, sanitizeSettings, type Settings } from "./storage";
 
 function expense(partial: Partial<Expense> & { amountMinor: number; date: string }): Expense {
   return {
@@ -298,7 +298,8 @@ describe("sanitizeExpenses", () => {
 
 describe("sanitizeSettings", () => {
   it("falls back to defaults for invalid values", () => {
-    expect(sanitizeSettings({ currency: "nope", theme: "neon" })).toEqual(DEFAULT_SETTINGS_EXPECTED);
+    expect(sanitizeSettings({ currency: "nope", theme: "neon" })).toEqual(DEFAULT_SETTINGS);
+    expect(sanitizeSettings(null)).toEqual(DEFAULT_SETTINGS);
   });
 
   it("keeps valid values", () => {
@@ -308,5 +309,3 @@ describe("sanitizeSettings", () => {
     });
   });
 });
-
-const DEFAULT_SETTINGS_EXPECTED: Settings = { currency: "NGN", theme: "light" };
