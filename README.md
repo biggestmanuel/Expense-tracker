@@ -65,3 +65,5 @@ Expenses are stored only in your browser via `localStorage` under the keys `spen
 ## Scope
 
 This is a client-side utility, not a financial service. There is no cloud backup, sync, multi-device support, authentication or encryption at rest, and no handling of bank data.
+
+**Intentionally public:** Spendly has no accounts, no server, and no authenticated routes by design. All data lives in `localStorage` in the user's browser. Standing rule 6 (auth on every route) does not apply — there are no routes — and no auth will be added unless you ask. Instead of auth, the app is protected client-side by form validation, positive-amount and future-date guards, description/notes length limits, a category allowlist, strict parsing, and row-level CSV validation; the monthly budget panel is the client-side spending-cap analogue.
